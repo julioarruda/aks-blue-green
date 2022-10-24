@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-blue
   labels:
     app: app
 	  version: __version__  
+  name: app-blue
 spec:
   replicas: 3
   selector:
