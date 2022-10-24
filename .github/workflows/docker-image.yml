@@ -47,7 +47,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "__image__"
-        replace: 'pocregostryb3.azurecr.io/k8sdemo:${{ github.sha }}'
+        replace: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         regex: false 
 
     - name: Set cluster context
@@ -60,7 +60,7 @@ jobs:
     # Runs a set of commands using the runners shell
     - uses: Azure/k8s-deploy@v3.1
       with:
-        images: 'pocregostryb3.azurecr.io/k8sdemo:${{ github.sha }}'
+        images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
             deployment-blue.yml
             service.yml
@@ -86,7 +86,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "__image__"
-        replace: 'pocregostryb3.azurecr.io/k8sdemo:${{ github.sha }}'
+        replace: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         regex: false 
 
     - name: Set cluster context
@@ -101,7 +101,7 @@ jobs:
       if: ${{ success() }}
       with:
         namespace: default
-        images: 'pocregostryb3.azurecr.io/k8sdemo:${{ github.sha }}'
+        images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
             deployment-blue.yml
             service.yml
@@ -114,7 +114,7 @@ jobs:
       if: ${{ failure() }}
       with:
         namespace: default
-        images: 'pocregostryb3.azurecr.io/k8sdemo:${{ github.sha }}'
+        images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
             deployment-blue.yml
             service.yml
