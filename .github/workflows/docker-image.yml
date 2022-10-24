@@ -58,15 +58,16 @@ jobs:
         resource-group: ${{ env.RESOURCE_GROUP }}
     
     # Runs a set of commands using the runners shell
-    - uses: Azure/k8s-deploy@v4.5
-      with:
-        images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
-        manifests: |
-            deployment-blue.yml
-            service.yml
-        strategy: blue-green
-        action: deploy
-        route-method: ingress
+    - run: kubectl apply -f deployment-blue.yml
+    # - uses: Azure/k8s-deploy@v4.5
+    #   with:
+    #     images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
+    #     manifests: |
+    #         deployment-blue.yml
+    #         service.yml
+    #     strategy: blue-green
+    #     action: deploy
+    #     route-method: ingress
 
   promotereject:
     runs-on: ubuntu-latest
@@ -96,18 +97,23 @@ jobs:
         cluster-name: ${{ env.AKS_CLUSTER_NAME }}
         resource-group: ${{ env.RESOURCE_GROUP }}
 
-    - name: Promote App
-      uses: Azure/k8s-deploy@v4.5
-      if: ${{ success() }}
-      with:
-        namespace: default
-        images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
-        manifests: |
-            deployment-green.yml
-            service.yml
-        strategy: blue-green
-        route-method: ingress
-        action: promote  #deploy is the default; we will later use this to promote/reject
+    
+    - run: |
+        kubectl apply -f deployment-blue.yml        
+        kubectl apply -f service.yml        
+
+    # - name: Promote App
+    #   uses: Azure/k8s-deploy@v4.5
+    #   if: ${{ success() }}
+    #   with:
+    #     namespace: default
+    #     images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
+    #     manifests: |
+    #         deployment-green.yml
+    #         service.yml
+    #     strategy: blue-green
+    #     route-method: ingress
+    #     action: promote  #deploy is the default; we will later use this to promote/reject
 
     - name: Reject App
       uses: azure/k8s-deploy@v4.5
