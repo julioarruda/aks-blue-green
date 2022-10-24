@@ -108,7 +108,8 @@ jobs:
             service.yml
         strategy: blue-green
         route-method: ingress
-        action: promote  #deploy is the default; we will later use this to promote/reject
+        action: promote
+        force: true #deploy is the default; we will later use this to promote/reject
 
     - name: Reject App
       uses: azure/k8s-deploy@v4.5
@@ -122,3 +123,4 @@ jobs:
         strategy: blue-green
         route-method: ingress
         action: reject
+        force: true
