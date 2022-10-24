@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: aks-blue-green-appgw
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "__version__"
-        replace: "0.0.1"
+        replace: "0.0.2"
         regex: false    
 
     - name: Find and Replace
@@ -79,7 +79,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "__version__"
-        replace: "0.0.1"
+        replace: "0.0.2"
         regex: false    
 
     - name: Find and Replace
