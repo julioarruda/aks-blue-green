@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: Azure/docker-login@v1
+      with:
+        login-server: pocregostryb3.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . -t pocregostryb3.azurecr.io/demo:${{ github.sha }}
+        docker push pocregostryb3.azurecr.io/demo:${{ github.sha }}
