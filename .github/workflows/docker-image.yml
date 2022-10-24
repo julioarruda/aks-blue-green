@@ -64,7 +64,7 @@ jobs:
         manifests: |
             deployment-blue.yml
             service.yml
-            ingress.yml
+            ingress-green.yml
         strategy: blue-green
         action: deploy
         route-method: ingress
