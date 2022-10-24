@@ -9,12 +9,12 @@ spec:
   selector:
       matchLabels:
         app: app
-        version: __version__
+        #version: __version__
   template:
     metadata:
       labels:
         app: app
-        version: __version__
+        #version: __version__
     spec:
       containers: 
         - name: app
