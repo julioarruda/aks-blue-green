@@ -103,7 +103,7 @@ jobs:
         namespace: default
         images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
-            deployment-blue.yml
+            deployment-green.yml
             service.yml
         strategy: blue-green
         route-method: ingress
