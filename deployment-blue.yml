@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-blue
+spec:
+  replicas: 3
+  selector:
+      matchLabels:
+        app: app
+        version: __version__
+  template:
+    metadata:
+      labels:
+        app: app
+        version: __version__
+    spec:
+      containers: 
+        - name: app
+          image: __image__
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 200m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
