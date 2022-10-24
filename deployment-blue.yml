@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: app
-	  version: __version__  
   name: app-blue
 spec:
   replicas: 3
