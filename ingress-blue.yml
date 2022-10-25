@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app-blue
+  name: app
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
 spec:
@@ -12,7 +12,7 @@ spec:
       - path: /
         backend:
           service:
-            name: app-green
+            name: app
             port:
               number: 80
         pathType: Prefix  
