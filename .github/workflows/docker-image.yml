@@ -69,6 +69,7 @@ jobs:
         action: deploy
         route-method: ingress
         force: true
+        namespace: blue
 
   promotereject:
     runs-on: ubuntu-latest
@@ -111,7 +112,8 @@ jobs:
         strategy: blue-green
         route-method: ingress
         action: promote
-        force: true #deploy is the default; we will later use this to promote/reject
+        force: true 
+        namespace: green
 
     - name: Reject App
       uses: azure/k8s-deploy@v4.5
@@ -127,3 +129,4 @@ jobs:
         route-method: ingress
         action: reject
         force: true
+        namespace: blue
