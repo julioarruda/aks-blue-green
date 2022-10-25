@@ -3,13 +3,14 @@ kind: Deployment
 metadata:
   labels:
     app: app
+    release: __version__
   name: app
 spec:
   replicas: 3
   selector:
       matchLabels:
         app: app
-        release: __version__
+        #release: __version__
   template:
     metadata:
       labels:
