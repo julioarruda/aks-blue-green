@@ -40,7 +40,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "__version__"
-        replace: 0.0.7
+        replace: 0.0.8
         regex: false    
 
     - name: Find and Replace
