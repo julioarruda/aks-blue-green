@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app: app
-        release: __version__
+        #release: __version__
     spec:
       containers: 
         - name: app
