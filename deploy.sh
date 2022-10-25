@@ -46,9 +46,9 @@ ls
 
 # Deploy to slot
 
-kubectl apply -f deployment.yaml -n $SLOT
-kubectl apply -f service.yaml -n $SLOT
-kubectl apply -f ingress-blue.yaml -n $SLOT
+kubectl apply -f ./deployment.yaml -n $SLOT
+kubectl apply -f ./service.yaml -n $SLOT
+kubectl apply -f ./ingress-blue.yaml -n $SLOT
 
 
 
