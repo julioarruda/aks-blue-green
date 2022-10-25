@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: app
-  name: app-blue
+  name: app
 spec:
   replicas: 3
   selector:
