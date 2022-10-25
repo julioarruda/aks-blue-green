@@ -103,7 +103,7 @@ jobs:
       uses: Azure/k8s-deploy@v4.5
       if: ${{ success() }}
       with:
-        namespace: default
+        namespace: green
         images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
             deployment-green.yml
@@ -113,13 +113,13 @@ jobs:
         route-method: ingress
         action: promote
         force: true 
-        namespace: green
+        
 
     - name: Reject App
       uses: azure/k8s-deploy@v4.5
       if: ${{ failure() }}
       with:
-        namespace: default
+        namespace: blue
         images: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
         manifests: |
             deployment-blue.yml
@@ -129,4 +129,4 @@ jobs:
         route-method: ingress
         action: reject
         force: true
-        namespace: blue
+        
