@@ -34,13 +34,13 @@ echo "Green Version: $GREEN_VERSION"
  
 if [ $GREEN_VERSION -gt $BLUE_VERSION  ]; then 
     echo "Green is higher than blue - swapping to green"
-    kubectl apply -f ingress.yaml -n $SLOT_GREEN
-    kubectl apply -f ingress-blue.yaml -n $SLOT_BLUE
+    kubectl apply -f ingress.yml -n $SLOT_GREEN
+    kubectl apply -f ingress-blue.yml -n $SLOT_BLUE
     
 else
     echo "Blue is higher than green - swapping to blue"
-    kubectl apply -f ingress.yaml -n $SLOT_BLUE
-    kubectl apply -f ingress-blue.yaml -n $SLOT_GREEN
+    kubectl apply -f ingress.yml -n $SLOT_BLUE
+    kubectl apply -f ingress-blue.yml -n $SLOT_GREEN
 fi
 
 

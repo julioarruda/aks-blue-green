@@ -61,3 +61,23 @@ jobs:
         chmod +x ./deploy.sh
         ./deploy.sh app 
 
+
+  swap:
+
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment: approvalaks    
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set cluster context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURCE_GROUP }}
+    
+    - run: |
+        chmod +x ./swap.sh
+        ./swap.sh app 

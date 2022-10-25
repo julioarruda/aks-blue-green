@@ -30,7 +30,6 @@ echo "Blue Version: $BLUE_VERSION"
 echo "Green Version: $GREEN_VERSION"
 
 
- echo $GREEN_VERSION | tr -d '.'
  
 if [ $GREEN_VERSION -gt $BLUE_VERSION  ]; then 
     echo "Green is higher than blue - deploying blue"
@@ -41,8 +40,6 @@ else
 fi
 
 echo "Deploying to $SLOT"
-
-ls
 
 # Deploy to slot
 
