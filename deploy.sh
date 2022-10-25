@@ -42,6 +42,8 @@ fi
 
 echo "Deploying to $SLOT"
 
+ls
+
 # Deploy to slot
 
 kubectl apply -f deployment.yaml -n $SLOT
