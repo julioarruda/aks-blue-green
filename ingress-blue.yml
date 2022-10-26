@@ -4,10 +4,11 @@ metadata:
   name: app
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
+    cert-manager.io/issuer: letsencrypt-staging
+    cert-manager.io/acme-challenge-type: http01    
 spec:
   rules:
-  - host: app-blue.arruda.io
-    http:
+  - http:
       paths:
       - path: /
         backend:
@@ -16,3 +17,8 @@ spec:
             port:
               number: 80
         pathType: Prefix  
+    host: app-blue.arruda.io
+  tls:
+    - hosts:
+      - app-blue.arruda.io
+      secretName: app-blue-tls
