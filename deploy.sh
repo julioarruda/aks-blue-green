@@ -58,6 +58,7 @@ elif [[ $BLUE_ENVIRONMENT == "prod" && $GREEN_ENVIRONMENT == "staging" ]]; then
     SLOT="green"
 else
     echo "It's a new deployment, deploying blue"
+    kubectl label --overwrite namespace $SLOT_BLUE environment=staging 
     SLOT="blue"
 fi
 
