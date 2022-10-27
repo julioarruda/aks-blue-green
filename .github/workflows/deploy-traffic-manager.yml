@@ -71,6 +71,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Set cluster context
       uses: azure/aks-set-context@v1
       with:
