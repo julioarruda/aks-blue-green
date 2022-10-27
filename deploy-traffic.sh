@@ -18,23 +18,27 @@ NAMESPACE_ENVIRONMENT="staging"
 # check version of deployment in slot
 function check_slot_version() {
     #echo "Checking version of $1 Slot"
-    VERSION=$(kubectl get deployment -n $1 $APP_NAME -o jsonpath='{.metadata.labels.release}')
+    
     NAMESPACE_ENV=$(kubectl get namespace $1 -o jsonpath='{.metadata.labels.environment}')
     #echo "Version: $VERSION"
     APP_VERSION=$VERSION
     NAMESPACE_ENVIRONMENT=$NAMESPACE_ENV
 }
 
+
+#check service ip
+function check_service_ip() {
+    SERVICE_IP=$(kubectl get service $APP_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}' -n $1)
+}
+
 check_slot_version $SLOT_BLUE
-BLUE_VERSION=$(echo $APP_VERSION | tr -d '.')
 BLUE_ENVIRONMENT=$NAMESPACE_ENVIRONMENT
 
+
 check_slot_version $SLOT_GREEN
-GREEN_VERSION=$(echo $APP_VERSION | tr -d '.')
 GREEN_ENVIRONMENT=$NAMESPACE_ENVIRONMENT
 
-echo "Blue Version: $BLUE_VERSION"
-echo "Green Version: $GREEN_VERSION"
+
 echo "Blue Environment: $BLUE_ENVIRONMENT"
 echo "Green Environment: $GREEN_ENVIRONMENT"
 
@@ -68,5 +72,21 @@ echo "Deploying to $SLOT"
 # Deploy to slot
 
  kubectl apply -f deployment.yml -n $SLOT
- kubectl apply -f service.yml -n $SLOT
- kubectl apply -f ingress-blue.yml -n $SLOT
+ kubectl apply -f service-traffic.yml -n $SLOT
+ 
+
+sleep 10
+
+check_service_ip $SLOT_BLUE
+BLUE_IP=$SERVICE_IP
+
+check_service_ip $SLOT_GREEN
+GREEN_IP=$SERVICE_IP
+
+if [ $SLOT == "blue" ]; then
+    echo "The new version is deployed to blue slot"
+    echo "You can access the new version at $BLUE_IP"
+else
+    echo "The new version is deployed to green slot"
+    echo "You can access the new version at $GREEN_IP"
+fi

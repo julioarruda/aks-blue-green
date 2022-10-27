@@ -1,0 +1,83 @@
+name: aks-blue-traffic-manager
+
+on:
+  workflow_dispatch:
+
+env:
+  ACR_NAME: pocregostryb3.azurecr.io
+  RESOURCE_GROUP: poc-b3-2
+  AKS_CLUSTER_NAME: poc-b3-2
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: Azure/docker-login@v1
+      with:
+        login-server: pocregostryb3.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . -t pocregostryb3.azurecr.io/demo:${{ github.sha }}
+        docker push pocregostryb3.azurecr.io/demo:${{ github.sha }}
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs: build
+    environment: deploy    
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+        find: "__version__"
+        replace: 0.0.9
+        regex: false    
+
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+        find: "__image__"
+        replace: 'pocregostryb3.azurecr.io/demo:${{ github.sha }}'
+        regex: false 
+
+    - name: Set cluster context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURCE_GROUP }}
+    
+    - run: |
+        chmod +x ./deploy-traffic.sh
+        ./deploy-traffic.sh app 
+
+
+  swap:
+
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment: approvalaks    
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set cluster context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURCE_GROUP }}
+    
+    - run: |
+        chmod +x ./swap-traffic.sh
+        ./swap-traffic.sh app 
