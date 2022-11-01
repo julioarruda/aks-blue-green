@@ -1,0 +1,28 @@
+name: aks-blue-green-appgw-rollback
+
+on:
+  workflow_dispatch:
+
+env:
+  ACR_NAME: pocregostryb3.azurecr.io
+  RESOURCE_GROUP: poc-b3-2
+  AKS_CLUSTER_NAME: poc-cluster-b3
+
+jobs:
+  swap:
+    runs-on: ubuntu-latest
+    environment: approvalaks    
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set cluster context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURCE_GROUP }}
+    
+    - run: |
+        chmod +x ./swap.sh
+        ./swap.sh app 
